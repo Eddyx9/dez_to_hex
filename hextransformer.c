@@ -1,32 +1,24 @@
-/* hextransformer_3000.c */
+/* hextransformer.c */
 #include<stdio.h>
 
-int number;
+unsigned int number;
 int rest[256];
-int number2;
+int i=0;
 
-int main(void) {
-  int i=0;
-  int j;
-  int control;
-  printf("dez: ");
-  scanf("%d", &number);
-  printf("hex: ");
-  
-  do {
-    number2=number/16;			//Groesse naechste Stelle
-    rest[i]=number%16;			//Verbleibender Rest in vorheriger Stelle
-    number=number2;
-    i++;
-  } while(number >=1);  
-  i--;
-  
-  for(j = 255; j >= 0; j--) {
-    if((!rest[j]) && (!control)) {	//Vorstehende Stellen mit Null weg
-    }
-    else {
-      control = 1;			//Stellen mit Null werden nicht mehr geloescht
-      switch(rest[j]) {
+void output();
+
+void transformation() {
+  while(number>0) {
+    rest[i++]=number%16;		//Verbleibender Rest in vorheriger Stelle
+    number=number/16;			//Groesse naechste Stelle
+  }
+  output();
+}
+
+void output() {
+  for(--i; i>= 0; i--) {
+			
+      switch(rest[i]) {
        case 10:	printf("A");		//ggf. als Buchstabe ausgeben
 		break;
        case 11:	printf("B");
@@ -41,9 +33,21 @@ int main(void) {
 		break;
        case 16:	printf("Error");
 		break;
-       default:	printf("%d", rest[j]);
-     }
+       default:	printf("%d", rest[i]);
+	}
     }
+}
+
+int main(void) {
+  printf("max. 4294967295\n");
+  printf("dez: ");
+  scanf("%ui",&number);
+  printf("hex: ");
+  if(number==0) {
+    printf("0");
+  }
+  else {
+    transformation();
   }
   printf("\n");
   return 0;
